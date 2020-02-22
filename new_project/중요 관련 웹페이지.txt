@@ -1,0 +1,5 @@
+word cloud - 단어의 개수를 측정
+
+ngram - 단어의 크기별로 분석
+
+when2meet - 미팅 일정 정하기 웹

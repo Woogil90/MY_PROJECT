@@ -1,0 +1,240 @@
+<html>
+<head>
+	<title>FAKE REVIEW 탐지기 </title>
+	<meta charset="utf-8">
+	<!-- Bootstrp;CSS link copy-paste -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+	<style>
+
+		.container {
+			width: 940px;
+			margin: 0px auto;
+			padding:20px;
+			border: 1px solid #ffffff;
+		}
+
+		.header {
+			border: 1px solid #ffffff;
+			padding: 20px;
+			margin-bottom: 20px;
+		}
+
+		.header-title {
+			color: green;
+		}
+		.inline-div {
+			display: inline !important;
+		}
+
+		#search-input {
+			border: 4px solid green;
+		}
+		h1 {
+			text-align: center;
+			color: #ffffff;
+		}
+		#search-input-button{
+			border:4px solid green;	
+		}
+		h1 {
+			text-align: center;
+			color: #ffffff;
+		}
+		.statistical-result {
+			width: 100%;
+			border-top: 1px solid #444444;
+			border-collapse: collapse;
+		}
+		th, td {
+			border-bottom: 1px solid #444444;
+			padding: 10px;
+		}
+
+
+	</style>
+
+</head>
+
+
+
+<body>
+	<!-- Bootstrp;jQuery,JS link copy-paste -->
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	
+
+	<div id="container">
+
+		<div class="header text-center" role="banner">
+			<table class="header-title inline-div">
+				<thead>
+					<tr>
+						<th class="inline-div"><h3>NAVER 영화</h3></th>
+						<th> </th>
+
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>FAKE REVIEW 탐지기</td>
+						<td> 
+							<div class="inline-div search-input-container">
+								<input id="search-input" placeholder="영화를 검색해주세요!">
+							</div>
+							<div class="inline-div search-input-button">
+								<button class="btn btn-SUCCESS btn-sm" type="button">Search</button>
+							</div> 
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+
+
+
+
+
+		<!---layout//used GRID system in bootstrap --->
+		<div class="row align-items-start">
+
+
+
+
+			<div class="col-sm left">
+				<div class="card border-secondary mb-3">
+					<h5 class="card-header bg-transparent border-secondary text-secondary">NAVER 영화 사이트 </br> (OR REVIEW list불러오기)</h5>
+					<div class="card-body">
+						<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+					</div>
+				</div>
+			</div>
+
+
+
+
+			<div class="col-sm center">
+
+
+				<div class="card border-secondary mb-3">
+					<h5 class="card-header bg-transparent border-secondary text-secondary">필터링 검색창</h5>
+					<div class="card-body">
+						<p class="card-text">필터링 단어 등록</p>
+
+						<div class="card-body">
+							<div class="inline-div search-input-container">
+								<input id="search-input" placeholder="단어를 입력해주세요!"> <button type="button" class="btn btn-success">관심단어 등록</button>
+							</div>
+						</div>
+						<div class="card-body">
+							<div class="card" style="width: 18rem;">
+								<div class="card-header">
+									등록된 단어목록<br>(클릭하여 초기화/삭제/적용)
+								</div>
+								<ul class="list-group list-group-flush">
+									<dv class="list-group-item">table 삽입</dv>
+									<dv class="list-group-item"><a href="#" class="btn btn-primary">초기화</a><a href="#" class="btn btn-primary">삭제</a><a href="#" class="btn btn-primary">적용</a></dv>
+								</ul>
+							</div>
+
+
+
+
+
+						</div>
+					</div>
+				</div>
+
+
+				<div class="card border-secondary mb-3">
+					<h5 class="card-header bg-transparent border-secondary text-secondary">가장 많이 사용된 어휘 조회 <button type="button" class="btn btn-success">클릭</button></h5>
+					<div class="card-body">
+						<table class="statistical-result">
+							<thead>
+								<tr>
+									<th scope="col">구분</th>
+									<th scope="col">어휘명</th>
+									<th scope="col">%</th>
+									<th scope="col">사용횟수</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th scope="row">1</th>
+									<td>Mark</td>
+									<td>84%</td>
+									<td>85</td>
+								</tr>
+								<tr>
+									<th scope="row">2</th>
+									<td>Jacob</td>
+									<td>80%</td>
+									<td>79</td>
+								</tr>
+								<tr>
+									<th scope="row">3</th>
+									<td>Larry</td>
+									<td>75%</td>
+									<td>72</td>
+								</tr>
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+
+
+
+			<div class="col-sm right">
+				<div id="accordion">
+					<div class="card">
+						<div class="card-header" id="headingOne">
+							<h5 class="mb-0">
+								<button class="btn btn-link collapsed text-secondary" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+									FAKE일 가능성이 높은 REVIEW 보기
+								</button>
+							</h5>
+						</div>
+
+						<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+							<div class="card-body">
+								리뷰리스트
+							</div>
+						</div>
+					</div>
+					<div class="card">
+						<div class="card-header" id="headingTwo">
+							<h5 class="mb-0">
+								<button class="btn btn-link collapsed text-secondary" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+									FAKE일 가능성이 높은 REVIEW 보기
+								</button>
+							</h5>
+						</div>
+						<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+							<div class="card-body">
+								리뷰리스트
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+
+			</div>
+
+
+
+
+
+
+
+		</div>
+
+	</div>
+</body>
+</html>
