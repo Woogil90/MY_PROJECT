@@ -1,0 +1,342 @@
+<html>
+<head>
+	<title>FAKE REVIEW 탐지기 </title>
+	<meta charset="utf-8">
+	<!-- Bootstrp;CSS link copy-paste -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+	<style>
+
+		.container {
+			width: 940px;
+			margin: 0px auto;
+			padding:20px;
+			border: 1px solid #ffffff;
+		}
+
+		.header {
+			border: 1px solid #ffffff;
+			padding: 20px;
+			margin-bottom: 20px;
+		}
+
+		.header-title {
+			color: green;
+		}
+		.inline-div {
+			display: inline !important;
+		}
+
+		#search-input {
+			border: 4px solid green;
+		}
+		h1 {
+			text-align: center;
+			color: #ffffff;
+		}
+		#search-input-button{
+			border:4px solid green;	
+		}
+		h1 {
+			text-align: center;
+			color: #ffffff;
+		}
+		.statistical-result {
+			width: 100%;
+			border-top: 1px solid #444444;
+			border-collapse: collapse;
+		}
+		th, td {
+			border-bottom: 1px solid #444444;
+			padding: 10px;
+		}
+
+
+	</style>
+
+	<script>
+
+	// 1. 영화의 제목 값을 받아온다.
+	// 2. 제목값을 네이버 영화 API에 넣어 제목에 해당하는 코드를 가져온다
+	// 3. 코드를 URL에 추가하여 끌어올 리뷰를 연결한다.
+	// 4. 리뷰를 크롤링한다.
+
+	function review() {
+		let keyword = $('#search-input').val();
+		if (keyword == '') {
+			alert('키워드를 입력하세요!')
+			return;
+		}
+//1-1 키워드를 입력한다.
+
+let target_url = 'https://movie.naver.com/movie/search/result.nhn?query='+keyword+'&section=all&ie=utf8';
+
+//2-1 키워드의 영화 페이지로 이동한다.
+$.ajax({
+	type: "GET",
+	url: target_url,
+	data: {},
+	success: function(response){
+
+		let search_list = response['search_list_1'];
+		let moviecode_url = search_list[1][result_thumb];
+		let moviecode = moviecode_url.split('code=')[1];
+              //여기까지 영화 코드를 가져왔다.
+          }
+      })
+//2-2 키워드의 영화코드를 가져온다.
+
+for (let i = 1 ; i < 3; i++){
+
+	let search_url = 'https://movie.naver.com/movie/bi/mi/pointWriteFormList.nhn?code='+moviecode+'&type=after&isActualPointWriteExecute=false&isMileageSubscriptionAlready=false&isMileageSubscriptionReject=false&page='+i+''; 
+//3-1 영화 코드의 리뷰페이지에 들어간다.
+
+$.ajax({
+	type: "post",
+	url: search_url,
+	data: {},
+	success: function(response){
+
+		let score_result = response['score_result'];
+		for (let i = 1 ; i < 11; i++){
+			let star_score = score_result[i]['star_score'];
+			let score = text.star_score;
+		//평점 기입
+
+		let score_reple = score_result[i]['score_reple'];
+		let reple = text.score_reple;
+		//댓글 기입
+
+//4-1 크롤링한 값들을 순서대로 테이블에 넣는다.
+let temp_html = '<th scope ="row">'+i+'</th>\
+<td>'+score+'</td>\
+<td>'+reple+'</td>\
+<td>(체크란)</td>'
+
+$('#insert_review').append(temp_html);
+//4-2 for loop를 통해 테이블을 주욱 만든다.
+
+}
+
+}
+})
+
+
+
+
+</script>
+
+
+
+
+
+</head>
+
+
+
+<body>
+	<!-- Bootstrp;jQuery,JS link copy-paste -->
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+	<div id="container">
+
+		<!-- //영화의 제목을 입력하는 버튼을 만든다// -->
+
+		<div class="header text-center" role="banner">
+			<table class="header-title inline-div">
+				<thead>
+					<tr>
+						<th class="inline-div"><h3>NAVER 영화</h3></th>
+						<th> </th>
+
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>FAKE REVIEW 탐지기</td>
+						<td> 
+							<div class="inline-div search-input-container">
+								<input id="search-input" placeholder="영화를 검색해주세요!(ex. 기생충)">
+							</div>
+							<div class="inline-div search-input-button">
+								<button onclick="review()" type="button">Search</button>
+							</div> 
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+
+
+
+
+
+		<!---layout//used GRID system in bootstrap --->
+		<div class="row align-items-start">
+
+
+
+
+			<div class="col-sm left">
+				<div class="card border-secondary mb-3">
+					<h5 class="card-header bg-transparent border-secondary text-secondary">NAVER 영화 리뷰리스트</h5>
+
+					<!-- 리뷰 리스트 업 - 예시 우선 작성-->
+
+					<table class="statistical-result">
+						<thead>
+							<tr>
+								<th scope="col">순서</th>
+								<th scope="col">평점</th>
+								<th scope="col">리뷰</th>
+								<th scope="col">체크</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr id = 'insert_review'>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+
+
+
+			<div class="col-sm center">
+
+
+				<div class="card border-secondary mb-3">
+					<h5 class="card-header bg-transparent border-secondary text-secondary">다른 영화와 비교</h5>
+					<div class="card-body">
+						<p class="card-text">리뷰당 등장 단어 추이</p>
+
+						<table class="statistical-result">
+							<thead>
+								<tr>
+									<th scope="col">순서</th>
+									<th scope="col">등장 단어</th>
+									<th scope="col">해당 영화(%) </th>
+									<th scope="col">타 영화(유사장르 평균 %)</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th scope="row">1</th>
+									<td>Mark</td>
+									<td>28%</td>
+									<td>85%</td>
+								</tr>
+								<tr>
+									<th scope="row">2</th>
+									<td>Jacob</td>
+									<td>45%</td>
+									<td>79%</td>
+								</tr>
+								<tr>
+									<th scope="row">3</th>
+									<td>Larry</td>
+									<td>67%</td>
+									<td>45%</td>
+								</tr>
+							</tbody>
+						</table>
+
+					</div>
+				</div>
+
+
+				<div class="card border-secondary mb-3">
+					<h5 class="card-header bg-transparent border-secondary text-secondary">가장 많이 사용된 어휘 조회 <button type="button" class="btn btn-success">클릭</button></h5>
+					<div class="card-body">
+						<table class="statistical-result">
+							<thead>
+								<tr>
+									<th scope="col">구분</th>
+									<th scope="col">어휘명</th>
+									<th scope="col">%</th>
+									<th scope="col">사용횟수</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th scope="row">1</th>
+									<td>Mark</td>
+									<td>84%</td>
+									<td>85</td>
+								</tr>
+								<tr>
+									<th scope="row">2</th>
+									<td>Jacob</td>
+									<td>80%</td>
+									<td>79</td>
+								</tr>
+								<tr>
+									<th scope="row">3</th>
+									<td>Larry</td>
+									<td>75%</td>
+									<td>72</td>
+								</tr>
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+
+
+
+			<div class="col-sm right">
+				<div id="accordion">
+					<div class="card">
+						<div class="card-header" id="headingOne">
+							<h5 class="mb-0">
+								<button class="btn btn-link collapsed text-secondary" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+									FAKE일 가능성이 높은 REVIEW 보기
+								</button>
+							</h5>
+						</div>
+						<table class="statistical-result">
+							<thead>
+								<tr>
+									<th scope="col">순서</th>
+									<th scope="col">평점</th>
+									<th scope="col">리뷰</th>
+									<th scope="col">fake 확률(%)</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th scope="row">6</th>
+									<td>9</td>
+									<td>채끝살 짜파구리 사러 갑니다!!!</td>
+									<td>85%</td>
+								</tr>
+							</tbody>
+						</table>
+
+
+
+					</div>
+				</div>
+
+
+			</div>
+
+
+
+
+
+
+
+		</div>
+
+	</div>
+</body>
+</html>
