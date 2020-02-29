@@ -1,0 +1,233 @@
+<html>
+<head>
+	<title>FAKE REVIEW 탐지기 </title>
+	<meta charset="utf-8">
+	<!-- Bootstrp;CSS link copy-paste -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	<!-- Bootstrp;jQuery,JS link copy-paste -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+	<style>
+
+
+		.container {
+			width: 940px;
+			margin: 0px auto;
+			padding:20px;
+			border: 1px solid #ffffff;
+			border-bottom:none
+		}
+
+		.header {
+			border: 1px solid #ffffff;
+			padding: 20px;
+			margin-bottom: 20px;
+			border-bottom:none
+		}
+
+		.header-title {
+			color: green;
+			border: 0px solid transparent;
+			border-bottom:none
+
+		}
+		.inline-div {
+			display: inline !important;
+			border-bottom:none
+		}
+
+		#search-input {
+			border: 4px solid green;
+			.inline-div {
+				border-bottom:none
+			}
+			h1 {
+				text-align: center;
+				color: #ffffff;
+				}}
+			#search-input-button{
+				border:4px solid green;	
+			}
+			h1 {
+				text-align: center;
+				color: #ffffff;
+			}
+			.statistical-result {
+				width: 100%;
+				border-top: 1px solid #444444;
+				border-collapse: collapse;
+			}
+			th, td {
+				border-bottom: 1px solid #444444;
+				padding: 10px;
+			}
+
+			.red {
+				color: red;
+			}
+
+			.blue {
+				color: blue;
+			}
+			.autoscroll {
+				overflow: auto;
+			}
+
+
+		</style>
+
+		<script>
+
+	// 1. 영화의 제목 값을 받아온다.
+	// 2. 제목값을 네이버 영화 API에 넣어 제목에 해당하는 코드를 가져온다
+	// 3. 코드를 URL에 추가하여 끌어올 리뷰를 연결한다.
+	// 4. 리뷰를 크롤링한다.
+
+	function search() {
+		let keyword = $('#search-input').val();
+		if (keyword == '') {
+			alert('키워드를 입력하세요!')
+			return;
+		}
+		console.log(keyword);
+		//1-1 키워드를 입력한다.
+
+		//2 키워드를 url API로 넘겨준다.
+		let moviecode_receive;
+
+		$.ajax({
+			type: "post",
+			url: '/keyword',
+			data: {'keyword_give':keyword},
+			success: function(response){
+				if(response['result'] == 'success'){
+
+					let reviews = response['reviews'];
+					let picture = response['picture'];
+
+					$('#poster').append("<img src="+picture+" />");
+
+					console.log(reviews);
+
+					$('#reviews-box').html('');
+
+					for (let i = 0; i < reviews.length; i++) {
+						make_box(reviews[i]['rank'],reviews[i]['score'],reviews[i]['review'])
+					}
+				} else {
+					alert('리뷰를 받아오지 못했습니다');
+				}
+
+			}
+
+		})
+
+		alert('분석 완료! 빨간색 단어가 많을수록 fake, 파란색 단어가 많을수록 real입니다. ');
+		return ;
+	}
+
+//1. ajax 내에서 DB의 데이터를 웹페이지에 올리는 function
+function make_box(rank,score,review){
+	let temp_html = '<tr>\
+	<td><button class = "text-center">'+rank+'</button></td>\
+	<td style = "width: 100px;" class = "text-center">'+score+'</td>\
+	<td>'+review+'</td>\
+	</tr>';
+	$('#reviews-box').append(temp_html);}
+
+
+
+
+
+
+
+</script>
+
+
+</head>
+
+<body>
+
+
+	<div id="container">
+
+		<!-- //영화의 제목을 입력하는 버튼을 만든다// -->
+
+		<div class="header text-center" role="banner">
+			<table class="header-title inline-div">
+				<thead>
+					<tr>
+						<th class="inline-div">NAVER 영화:FAKE REVIEW 탐지기</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td> 
+							<div class="inline-div search-input-container">
+								<input id="search-input" placeholder="영화를 검색해주세요!(ex. 기생충)">
+							</div>
+							<div class="inline-div search-input-button">
+								<button onclick="search()" type="button">Search</button>
+							</div> 
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+
+
+
+
+
+		<!---layout//used GRID system in bootstrap --->
+		<div class="row align-items-start">
+
+			<div class="col-sm left">
+
+
+				<div class="card border-secondary mb-3">
+					<h5 class="card-header bg-transparent border-secondary text-secondary text-center">영화 포스터</h5>
+					<div class="card-body">
+
+
+						<p class="card-text" id ="poster"></p>
+
+						
+
+					</div>
+				</div>
+			</div>
+
+
+			<div class="col-sm right autoscroll">
+				<div class="card border-secondary mb-3">
+					<h5 class="card-header bg-transparent border-secondary text-secondary text-center">NAVER 영화 리뷰리스트</h5>
+
+					<!-- 리뷰 리스트 업 - 예시 우선 작성-->
+
+					<table class="statistical-result">
+						<thead>
+							<tr>
+								<th scope="col" class = "text-center">순서</th>
+								<th scope="col" class = "text-center">평점</th>
+								<th scope="col" class = "text-center">리뷰</th>	
+							</tr>
+						</thead>
+						<tbody id ="reviews-box"></tbody>
+					</table>
+				</div>
+			</div>
+
+
+
+
+		</div>
+
+	</div>
+</body>
+</html>
